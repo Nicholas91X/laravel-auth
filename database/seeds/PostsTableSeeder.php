@@ -20,6 +20,7 @@ class PostsTableSeeder extends Seeder
             $newPost->description = $faker->text();
             $newPost->published = rand(0,1);
             $newPost->slug = Str::of($newPost->title)->slug("-");
+            $newPost->image = $faker->imageUrl(640, 480, 'animals', true);
             $newPost->save();
         }
     }

@@ -26,18 +26,21 @@
                 <a class="navbar-brand" href="{{ url('/') }}">
                     Boolpress
                 </a>
+                <div id="icon-nav">
+                    <img src="https://www.freepnglogos.com/uploads/dumbbell/dumbbell-clipart-etsy-3.png" alt="Boolpress Logo">
+                </div>
                 <button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#navbarSupportedContent" aria-controls="navbarSupportedContent" aria-expanded="false" aria-label="{{ __('Toggle navigation') }}">
                     <span class="navbar-toggler-icon"></span>
                 </button>
 
-                <div class="collapse navbar-collapse" id="navbarSupportedContent">
+                <div class="collapse navbar-collapse ml-5" id="navbarSupportedContent">
                     <!-- Left Side Of Navbar -->
                     <ul class="navbar-nav mr-auto">
                         <li class="nav-item">
                             <a class="nav-link" href="{{ route('posts.index') }}">Posts</a>
                         </li>
                         <li class="nav-item">
-                            <a class="nav-link" href="{{ route('home') }}">Dashboard</a>
+                            <a class="nav-link" href="{{ route('home') }}">Home</a>
                         </li>
                     </ul>
 
@@ -78,6 +81,11 @@
         </nav>
 
         <main class="py-4">
+            <a href="{{url()->previous()}}">
+                <div id="back">
+                    <span>&#8592;</span>
+                </div>
+            </a>
             @yield('content')
         </main>
     </div>

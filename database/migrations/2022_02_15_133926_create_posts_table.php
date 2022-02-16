@@ -19,6 +19,7 @@ class CreatePostsTable extends Migration
             $table->text("description");
             $table->boolean("published")->default(false);
             $table->string("slug", 180);
+            $table->string("image", 500);
             $table->timestamps();
         });
     }

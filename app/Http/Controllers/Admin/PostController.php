@@ -5,6 +5,7 @@ namespace App\Http\Controllers\Admin;
 use App\Http\Controllers\Controller;
 use Illuminate\Http\Request;
 use App\Post;
+use Illuminate\Support\Str;
 
 class PostController extends Controller
 {
@@ -27,7 +28,7 @@ class PostController extends Controller
      */
     public function create()
     {
-        //
+        return view("admin.posts.create");
     }
 
     /**
@@ -38,7 +39,38 @@ class PostController extends Controller
      */
     public function store(Request $request)
     {
-        //
+        //Parte di validazione dati
+        $request->validate([
+            "title" => "required|string|max:150",
+            "description" => "required",
+            "published" => "sometimes|accepted",
+            "image" => "required|string|url"
+        ]);
+
+        //prendo i miei dati
+        $data = $request->all();
+
+        //creo un nuovo post
+        $newPost = new Post();
+        $newPost->title = $data['title'];
+        $newPost->description = $data['description'];
+        $newPost->image = $data['image'];
+
+        $slug = Str::of($newPost->title)->slug("-");
+        $count = 1;
+
+        while ( Post::where("slug", $slug)->first() ) {
+            $slug = Str::of($newPost->title)->slug("-") . "-{$count}";
+            $count++;
+        }
+
+        $newPost->slug = $slug;
+
+        $newPost->published = isset($data['published']);
+
+        $newPost->save();
+
+        return redirect()->route("posts.show", $newPost->id);
     }
 
     /**
@@ -47,9 +79,9 @@ class PostController extends Controller
      * @param  int  $id
      * @return \Illuminate\Http\Response
      */
-    public function show($id)
+    public function show(Post $post)
     {
-        //
+        return view("admin.posts.show", compact("post"));
     }
 
     /**
@@ -58,9 +90,9 @@ class PostController extends Controller
      * @param  int  $id
      * @return \Illuminate\Http\Response
      */
-    public function edit($id)
+    public function edit(Post $post)
     {
-        //
+        return view("admin.posts.edit", compact("post"));
     }
 
     /**
@@ -70,9 +102,45 @@ class PostController extends Controller
      * @param  int  $id
      * @return \Illuminate\Http\Response
      */
-    public function update(Request $request, $id)
+    public function update(Request $request, Post $post)
     {
-        //
+        //Parte di validazione dati
+        $request->validate([
+            "title" => "required|string|max:150",
+            "description" => "required",
+            "published" => "sometimes|accepted",
+            "image" => "required|string|url"
+        ]);
+
+        //prendo i miei dati
+        $data = $request->all();
+
+        //aggiorno post
+        if ( $post->title != $data['title'] ) {
+            $post->title = $data['title'];
+
+            $slug = Str::of($post->title)->slug("-");
+
+            if ( $slug != $post->slug ) {
+                $count = 1;
+
+                while ( Post::where("slug", $slug)->first() ) {
+                    $slug = Str::of($post->title)->slug("-") . "-{$count}";
+                    $count++;
+                }
+
+                $post->slug = $slug;
+            }
+        } 
+
+        $post->description = $data['description'];
+        $post->image = $data['image'];
+        $post->published = isset($data['published']);
+
+
+        $post->save();
+
+        return redirect()->route("posts.show", $post->id);
     }
 
     /**
@@ -81,8 +149,10 @@ class PostController extends Controller
      * @param  int  $id
      * @return \Illuminate\Http\Response
      */
-    public function destroy($id)
+    public function destroy(Post $post)
     {
-        //
+        $post->delete();
+
+        return redirect()->route("posts.index");
     }
 }
