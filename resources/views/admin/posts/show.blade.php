@@ -11,6 +11,9 @@
             <p class="card-text">{{$post->description}}</p>
         </div>
         <ul class="list-group list-group-flush">
+            @if ($post->cathegory)
+                <li class="list-group-item"><strong>Categoria: </strong><span class="badge bg-primary">{{$post->cathegory->slug}}</span></li>
+            @endif
             <li class="list-group-item"><strong>Slug: </strong>{{$post->slug}}</li>
             <li class="list-group-item">
                 <strong>Stato: </strong>

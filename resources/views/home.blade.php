@@ -15,6 +15,10 @@
                     @endif
 
                     Benvenuto <strong>{{Auth::user()->name}}</strong>! Hai eseguito il login 😉
+
+                    <hr>
+
+                    Vai alla sezione <a href="{{route("posts.index")}}">Post</a>
                 </div>
             </div>
         </div>

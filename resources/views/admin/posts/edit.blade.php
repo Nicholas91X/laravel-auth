@@ -31,7 +31,19 @@
                         @error('image')
                             <div class="alert alert-danger">{{ $message }}</div>
                         @enderror
-                    </div> 
+                    </div>
+                    <div class="form-group">
+                        <label for="cathegory">Categoria</label>
+                        <select name="cathegory_id" id="cathegory" class="custom-select @error('cathegory_id') is-invalid @enderror">
+                            <option value="">Seleziona una Categoria</option>
+                            @foreach ($cathegories as $cathegory)
+                                <option value="{{$cathegory->id}}" {{old("cathegory_id", $post->cathegory_id) == $cathegory->id ? "selected" : ""}}>{{$cathegory->name}}</option>   
+                            @endforeach
+                        </select>
+                        @error('cathegory_id')
+                            <div class="alert alert-danger">{{ $message }}</div>
+                        @enderror
+                    </div>
                     <div class="mb-3 ml-4">
                         @php
                             $published = old('published') ? old('published') : $post->published;    

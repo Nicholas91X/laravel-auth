@@ -5,6 +5,7 @@ namespace App\Http\Controllers\Admin;
 use App\Http\Controllers\Controller;
 use Illuminate\Http\Request;
 use App\Post;
+use App\Cathegory;
 use Illuminate\Support\Str;
 
 class PostController extends Controller
@@ -17,7 +18,7 @@ class PostController extends Controller
     public function index()
     {
         $posts = Post::all();
-
+        
         return view("admin.posts.index", compact("posts"));
     }
 
@@ -28,7 +29,9 @@ class PostController extends Controller
      */
     public function create()
     {
-        return view("admin.posts.create");
+        $cathegories = Cathegory::all();
+
+        return view("admin.posts.create", compact("cathegories"));
     }
 
     /**
@@ -44,7 +47,8 @@ class PostController extends Controller
             "title" => "required|string|max:150",
             "description" => "required",
             "published" => "sometimes|accepted",
-            "image" => "required|string|url"
+            "image" => "required|string|url",
+            "cathegory_id" => "nullable|exists:cathegories,id"
         ]);
 
         //prendo i miei dati
@@ -55,6 +59,7 @@ class PostController extends Controller
         $newPost->title = $data['title'];
         $newPost->description = $data['description'];
         $newPost->image = $data['image'];
+        $newPost->cathegory_id = $data["cathegory_id"];
 
         $slug = Str::of($newPost->title)->slug("-");
         $count = 1;
@@ -92,7 +97,9 @@ class PostController extends Controller
      */
     public function edit(Post $post)
     {
-        return view("admin.posts.edit", compact("post"));
+        $cathegories = Cathegory::all();
+
+        return view("admin.posts.edit", compact("post", "cathegories"));
     }
 
     /**
@@ -109,7 +116,8 @@ class PostController extends Controller
             "title" => "required|string|max:150",
             "description" => "required",
             "published" => "sometimes|accepted",
-            "image" => "required|string|url"
+            "image" => "required|string|url",
+            "cathegory_id" => "nullable|exists:cathegories,id"
         ]);
 
         //prendo i miei dati
@@ -135,6 +143,7 @@ class PostController extends Controller
 
         $post->description = $data['description'];
         $post->image = $data['image'];
+        $post->cathegory_id = $data["cathegory_id"];
         $post->published = isset($data['published']);
 
 

@@ -3,7 +3,7 @@
 @section('content')
 <div class="container">
     <div class="row justify-content-center">
-        <div class="col-md-8">
+        <div class="col-md-12">
             <div class="card">
                 <div class="card-header"><h2>Lista Post</h2></div>
 
@@ -18,6 +18,7 @@
                                 <th scope="col">Titolo</th>
                                 <th scope="col">Slug</th>
                                 <th scope="col">Stato</th>
+                                <th scope="col">Categoria</th>
                                 <th scope="col"></th>
                                 <th scope="col"></th>
                             </tr>
@@ -33,6 +34,13 @@
                                         <span class="badge rounded-pill bg-success">Pubblicato</span>
                                         @else
                                         <span class="badge rounded-pill bg-secondary">In lavorazione</span>
+                                        @endif
+                                    </td>
+                                    <td>
+                                        @if ($post->cathegory)
+                                        <span class="badge rounded-pill bg-primary">{{$post->cathegory->name}}</span>
+                                        @else
+                                        <span class="badge rounded-pill bg-light text-dark">Nessuna</span>
                                         @endif
                                     </td>
                                     <td>
